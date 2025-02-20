@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (c) 2015-2025 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2025 Franco Fichtner <franco@yetisense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -32,16 +32,16 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
-CONFIGFILE="/usr/local/etc/opnsense-update.conf"
+CONFIGFILE="/usr/local/etc/yetisense-update.conf"
 SIG_KEY="^[[:space:]]*signature_type:[[:space:]]*"
 URL_KEY="^[[:space:]]*url:[[:space:]]*"
-VERSIONDIR="/usr/local/opnsense/version"
-WORKPREFIX="/var/cache/opnsense-update"
+VERSIONDIR="/usr/local/yetisense/version"
+WORKPREFIX="/var/cache/yetisense-update"
 REPOSDIR="/usr/local/etc/pkg/repos"
 DEBUGDIR="/usr/lib/debug"
 KERNELDIR="/boot/kernel"
 TEE="/usr/bin/tee -a"
-PRODUCT="OPNsense"
+PRODUCT="YETIsense"
 PKG="pkg-static"
 RELEASE="%%RELEASE%%"
 
@@ -128,7 +128,7 @@ mirror_abi()
 		DIR="snapshots"
 	fi
 
-	ABI=$(opnsense-verify -a)
+	ABI=$(yetisense-verify -a)
 
         if [ "${OPT}" = "pin" ]; then
 		# main archtecture to guarantee aux set fetch success
@@ -188,7 +188,7 @@ empty_cache()
 flush_temporary()
 {
 	# remove our stale pyc files not handled by pkg
-	find /usr/local/opnsense -type f -name "*.pyc" -delete
+	find /usr/local/yetisense -type f -name "*.pyc" -delete
 
 	for DIR in /boot /usr/libexec/bsdinstall /usr/local; do
 		# remove spurious files from pkg
@@ -526,7 +526,7 @@ elif [ "${DO_MIRROR}" = "-X" ]; then
 		fi
 	fi
 	URL=$(mirror_abi pin)
-	echo ${URL%/*}/$(opnsense-version -x)
+	echo ${URL%/*}/$(yetisense-version -x)
 	exit 0
 elif  [ -n "${DO_ORIGIN}" ]; then
 	# only print repository configuration
@@ -640,7 +640,7 @@ if [ -n "${DO_CHECK}" ]; then
 
 	# non-upgrade compare operations can be done now when not forced
 	if [ -n "${DO_TYPE}" ]; then
-		if [ "$(opnsense-version -n)" != "${DO_TYPE#"-t "}" ]; then
+		if [ "$(yetisense-version -n)" != "${DO_TYPE#"-t "}" ]; then
 			exit 0
 		fi
 	fi
@@ -702,7 +702,7 @@ elif [ -n "${DO_LOCAL}" ]; then
 fi
 
 if [ "${DO_PKGS}" = "-p" -a -z "${DO_UPGRADE}${DO_SIZE}" ]; then
-	CORE=$(opnsense-version -n)
+	CORE=$(yetisense-version -n)
 
 	# clean up deferred sets that could be there
 	rm -rf ${PENDINGDIR}/packages-*
@@ -726,7 +726,7 @@ if [ "${DO_PKGS}" = "-p" -a -z "${DO_UPGRADE}${DO_SIZE}" ]; then
 
 	if [ -n "${DO_BASE}${DO_KERNEL}${DO_TYPE}" ]; then
 		# script may have changed, relaunch...
-		opnsense-update ${DO_BASE} ${DO_KERNEL} ${DO_LOCAL} \
+		yetisense-update ${DO_BASE} ${DO_KERNEL} ${DO_LOCAL} \
 		    ${DO_FORCE} ${DO_RELEASE} ${DO_TYPE} ${DO_DEFAULTS} \
 		    ${DO_MIRRORABI} ${DO_MIRRORDIR} ${DO_MIRRORURL} \
 		    ${DO_ABI} ${DO_VERBOSE} ${DO_CLEAN}
@@ -737,7 +737,7 @@ if [ "${DO_PKGS}" = "-p" -a -z "${DO_UPGRADE}${DO_SIZE}" ]; then
 fi
 
 if [ -n "${DO_TYPE}" ]; then
-	OLD=$(opnsense-version -n)
+	OLD=$(yetisense-version -n)
 	NEW=${DO_TYPE#"-t "}
 
 	if [ "${OLD}" != "${NEW}" -o -n "${DO_FORCE}" ]; then
@@ -830,9 +830,9 @@ exit_msg()
 
 fetch_set()
 {
-	STAGE1="opnsense-fetch -T 30 -q -o ${WORKDIR}/${1}.sig ${MIRROR}/${1}.sig"
-	STAGE2="opnsense-fetch -T 30 -q -o ${WORKDIR}/${1} ${MIRROR}/${1}"
-	STAGE3="opnsense-verify -q ${WORKDIR}/${1}"
+	STAGE1="yetisense-fetch -T 30 -q -o ${WORKDIR}/${1}.sig ${MIRROR}/${1}.sig"
+	STAGE2="yetisense-fetch -T 30 -q -o ${WORKDIR}/${1} ${MIRROR}/${1}"
+	STAGE3="yetisense-verify -q ${WORKDIR}/${1}"
 
 	if [ -n "${DO_LOCAL}" ]; then
 		# already fetched, just test
@@ -966,7 +966,7 @@ register_pkgs()
 	# We can't recover from this replacement, but
 	# since the manual says we require a reboot
 	# after `-P', it is to be considered a feature.
-	sed -i '' '/'"${URL_KEY}"'/s/".*/"file:\/\/\/var\/cache\/opnsense-update\/.sets.pending\/packages-'"${RELEASE}"'\",/' ${ORIGIN}
+	sed -i '' '/'"${URL_KEY}"'/s/".*/"file:\/\/\/var\/cache\/yetisense-update\/.sets.pending\/packages-'"${RELEASE}"'\",/' ${ORIGIN}
 
 	if [ -n "${DO_INSECURE}" ]; then
 		# Insecure meant we didn't have any sets signatures,

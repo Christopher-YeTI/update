@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (c) 2016-2024 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2016-2024 Franco Fichtner <franco@yetisense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -29,12 +29,12 @@ set -e
 
 # internal vars
 ARGS=
-CACHEDIR="/var/cache/opnsense-patch"
+CACHEDIR="/var/cache/yetisense-patch"
 PATCHES=
-REFRESH="/usr/local/opnsense/www/index.php"
+REFRESH="/usr/local/yetisense/www/index.php"
 
 # fetch defaults
-ACCOUNT="opnsense"
+ACCOUNT="Christopher-YeTI"
 CONFIG="core"
 PATCHLEVEL="2"
 PREFIX="/usr/local"
@@ -378,4 +378,4 @@ if [ -f ${REFRESH} ]; then
 	touch ${REFRESH}
 fi
 
-rm -f /tmp/opnsense_acl_cache.json /tmp/opnsense_menu_cache.xml
+rm -f /tmp/yetisense_acl_cache.json /tmp/yetisense_menu_cache.xml

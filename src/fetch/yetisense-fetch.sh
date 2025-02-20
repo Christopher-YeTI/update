@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (c) 2015 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2016-2023 Franco Fichtner <franco@yetisense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -27,20 +27,15 @@
 
 set -e
 
-PREFIX=
-CERT=
-KEY=
+EXIT=0
+OUTFILE=
 
-while getopts c:k:p: OPT; do
+while getopts ao:qT:w: OPT; do
 	case ${OPT} in
-	c)
-		CERT=${OPTARG}
+	o)
+		OUTFILE="${OPTARG}"
 		;;
-	k)
-		KEY=${OPTARG}
-		;;
-	p)
-		PREFIX=${OPTARG}
+	a|q|T|w)
 		;;
 	*)
 		echo "Usage: man ${0##*/}" >&2
@@ -49,43 +44,29 @@ while getopts c:k:p: OPT; do
 	esac
 done
 
-shift $((OPTIND - 1))
+ERRFILE=$(mktemp -q /tmp/yetisense-fetch.out.XXXXXX)
+PIDFILE=$(mktemp -q /tmp/yetisense-fetch.pid.XXXXXX)
 
-FILE=${1}
-
-if [ -n "${PREFIX}" ]; then
-	CERT=${PREFIX}.pub
-	KEY=${PREFIX}.key
+# clear the output file for exit code detection
+if [ -n "${OUTFILE}" -a -f "${OUTFILE}" ]; then
+	rm -f "${OUTFILE}"
 fi
 
-if [ ! -r "${KEY}" ]; then
-	echo "Cannot find private key: ${KEY}" >&2
-	exit 1
+daemon -f -m 2 -o ${ERRFILE} -p ${PIDFILE} fetch ${@}
+
+while :; do
+	sleep 1
+	echo -n .
+	[ ! -f ${PIDFILE} ] && break
+	pgrep -qF ${PIDFILE} || break
+done
+
+# emit a download failure when the file was not written
+if [ -n "${OUTFILE}" -a ! -f "${OUTFILE}" ]; then
+	echo -n "[$(cat ${ERRFILE})]"
+	EXIT=1
 fi
 
-if [ ! -r "${CERT}" ]; then
-	echo "Cannot find public certificate: ${CERT}" >&2
-	exit 1
-fi
+rm -f ${ERRFILE} ${PIDFILE}
 
-if [ ! -r "${FILE}" ]; then
-	echo "Cannot find file: ${FILE}" >&2
-	exit 1
-fi
-
-SUM=$(sha256 -q ${FILE})
-if [ -z "${SUM}" ]; then
-	echo "Error fetching checksum" >&2
-	exit 1
-fi
-
-(
-	echo SIGNATURE
-	echo -n ${SUM} | openssl dgst -sign ${KEY} -sha256 -binary
-	echo
-	echo CERT
-	cat ${CERT}
-	echo END
-) > ${FILE}.sig
-
-exit 0
+exit ${EXIT}

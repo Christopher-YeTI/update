@@ -1,5 +1,5 @@
 .\"
-.\" Copyright (c) 2015-2025 Franco Fichtner <franco@opnsense.org>
+.\" Copyright (c) 2015-2025 Franco Fichtner <franco@yetisense.org>
 .\"
 .\" Redistribution and use in source and binary forms, with or without
 .\" modification, are permitted provided that the following conditions
@@ -28,8 +28,8 @@
 .Dt OPNSENSE-UPDATE 8
 .Os
 .Sh NAME
-.Nm opnsense-update
-.Nd OPNsense update utility
+.Nm yetisense-update
+.Nd YETIsense update utility
 .Sh SYNOPSIS
 .Nm
 .Op Fl BbCdeFfiKkPpqRsuVvz
@@ -81,7 +81,7 @@ Change the set fetch and package release ABI to
 Change the
 .Ar abi_hint
 from the detected default
-.Pq output of Sq opnsense-verify Fl a
+.Pq output of Sq yetisense-verify Fl a
 to a specific value.
 If a subdirectory is appended,
 .Fl A Ar mirror_abi
@@ -131,7 +131,7 @@ context.
 .It Fl i
 Ignore the signature verification result.
 Otherwise, the
-.Xr opnsense-verify 8
+.Xr yetisense-verify 8
 utility is used to verify a set signature.
 The default is off meaning secure, unless the package mirror
 configuration does not use fingerprints.
@@ -203,7 +203,7 @@ properly handling the
 .Sq vital
 flag transition.
 The
-.Xr opnsense-version 8
+.Xr yetisense-version 8
 utility is used to test which version is currently installed.
 .It Fl U
 Unlock a set to allow updates.
@@ -240,55 +240,55 @@ This does not affect
 .El
 .Sh FILES
 .Bl -tag -width Ds
-.It Pa /usr/local/etc/opnsense-update.conf
+.It Pa /usr/local/etc/yetisense-update.conf
 Configuration file with advanced settings, e.g. for major
 release upgrade hints.
-.It Pa /usr/local/etc/pkg/repos/OPNsense.conf
+.It Pa /usr/local/etc/pkg/repos/YETIsense.conf
 The
 .Xr pkg.conf 5
 file used to configure the packages mirror.
-.It Pa /usr/local/opnsense/version/base
+.It Pa /usr/local/yetisense/version/base
 The file is used to check if a base system upgrade is necessary.
 It is embedded into the base set.
-.It Pa /usr/local/opnsense/version/base.lock
+.It Pa /usr/local/yetisense/version/base.lock
 The lock for preventing an update to the base system,
 operated by
 .Sq Fl \&Lb
 and
 .Sq Fl \&Ub .
-.It Pa /usr/local/opnsense/version/base.obsolete
+.It Pa /usr/local/yetisense/version/base.obsolete
 The file is used to list files to be removed after installation
 which are no longer required, operated by
 .Sq Fl C .
 It is embedded into the base set.
-.It Pa /usr/local/opnsense/version/kernel
+.It Pa /usr/local/yetisense/version/kernel
 The file is used to check if a kernel upgrade is necessary.
 It is embedded into the kernel set.
-.It Pa /usr/local/opnsense/version/kernel.lock
+.It Pa /usr/local/yetisense/version/kernel.lock
 The lock for preventing updates to the kernel,
 operated by
 .Sq Fl \&Lk
 and
 .Sq Fl \&Uk .
-.It Pa /usr/local/opnsense/version/pkgs
+.It Pa /usr/local/yetisense/version/pkgs
 The file is used to check if a packages upgrade is necessary.
 It is created by
 .Nm .
-.It Pa /usr/local/opnsense/version/pkgs.lock
+.It Pa /usr/local/yetisense/version/pkgs.lock
 The lock for preventing an update to all packages,
 operated by
 .Sq Fl \&Lp
 and
 .Sq Fl \&Up .
-.It Pa /var/cache/opnsense-update
+.It Pa /var/cache/yetisense-update
 The local cache storage directory.
 .El
 .Sh EXIT STATUS
 .Ex -std
 .Sh SEE ALSO
 .Xr pkg.conf 5 ,
-.Xr opnsense-verify 8 ,
-.Xr opnsense-version 8 ,
+.Xr yetisense-verify 8 ,
+.Xr yetisense-version 8 ,
 .Xr pkg 8
 .Sh AUTHORS
-.An Franco Fichtner Aq Mt franco@opnsense.org
+.An Franco Fichtner Aq Mt franco@yetisense.org

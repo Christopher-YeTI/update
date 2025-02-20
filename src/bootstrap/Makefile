@@ -1,5 +1,5 @@
-SCRIPTS=opnsense-bootstrap.sh
-MAN=	opnsense-bootstrap.8
+SCRIPTS=yetisense-bootstrap.sh
+MAN=	yetisense-bootstrap.8
 
 LOCALBASE?=${DESTDIR}/usr/local
 PREFIX?=${LOCALBASE}

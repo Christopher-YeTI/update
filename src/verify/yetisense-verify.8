@@ -1,5 +1,5 @@
 .\"
-.\" Copyright (c) 2015 Franco Fichtner <franco@opnsense.org>
+.\" Copyright (c) 2015-2021 Franco Fichtner <franco@yetisense.org>
 .\"
 .\" Redistribution and use in source and binary forms, with or without
 .\" modification, are permitted provided that the following conditions
@@ -24,35 +24,53 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd December 27, 2015
-.Dt OPNSENSE-SIGN 8
+.Dd February 11, 2021
+.Dt OPNSENSE-VERIFY 8
 .Os
 .Sh NAME
-.Nm opnsense-sign
-.Nd OPNsense signature generation
+.Nm yetisense-verify
+.Nd YETIsense signature verification
 .Sh SYNOPSIS
 .Nm
-.Fl p Ar prefix Ar file
+.Op Fl q
+.Op Fl r Ar reponame
+.Ar file
+.Nm
+.Fl al
 .Sh DESCRIPTION
 The
 .Nm
-utility signs arbitrary files by creatig a
+utility verifies
+.Fx Ap s
+.Xr pkg 8
+signatures on arbitrary files.
+A separate file containing the signature with the
 .Sq .sig
-file, which can then be verified using
-.Xr opnsense-verify 8 .
+extension must be present in order to verify against.
+.Pp
+Please note that signature verification only works
+against a single given repository for safety reasons.
 .Pp
 The options are as follows:
-.Bl -tag -width ".Fl p Ar prefix" -offset indent
-.It Fl p Ar prefix
-The prefix to the
-.Sq .key
-and
-.Sq .pub
-files to be used for signing.
+.Bl -tag -width ".Fl r Ar reponame" -offset indent
+.It Fl a
+Output the current system ABI string.
+.It Fl l
+Output the enabled repositories.
+.It Fl q
+Do not output text.
+.It Fl r Ar reponame
+Use the repository name
+.Ar reponame
+to find signature information.
+The default is
+.Sq YETIsense .
 .El
 .Sh EXIT STATUS
 .Ex -std
 .Sh SEE ALSO
-.Xr opnsense-verify 8
+.Xr pkg.conf 5 ,
+.Xr yetisense-sign 8 ,
+.Xr pkg 8
 .Sh AUTHORS
-.An Franco Fichtner Aq Mt franco@opnsense.org
+.An Franco Fichtner Aq Mt franco@yetisense.org

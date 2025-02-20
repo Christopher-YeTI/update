@@ -1,5 +1,5 @@
-PROG=	opnsense-verify
-MAN=	opnsense-verify.8
+PROG=	yetisense-verify
+MAN=	yetisense-verify.8
 
 SRCS=	config.c pkg.c
 

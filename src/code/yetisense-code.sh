@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (c) 2016-2024 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2016-2024 Franco Fichtner <franco@yetisense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -42,7 +42,7 @@ DO_VERBOSE=
 
 # fetch defaults
 SITE="https://github.com"
-ACCOUNT="opnsense"
+ACCOUNT="Christopher-YeTI"
 DIRECTORY="/usr"
 
 while getopts a:d:fno:rs:uVz OPT; do
@@ -105,7 +105,7 @@ if [ -z "${*}" -a -z "$(git rev-parse --git-dir 2> /dev/null)" ]; then
 	exit 0
 fi
 
-ABI=$(opnsense-version -a)
+ABI=$(yetisense-version -a)
 CONF="${DIRECTORY}/tools/config/${ABI}/make.conf"
 
 git_update()

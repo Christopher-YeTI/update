@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (c) 2016-2024 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2016-2024 Franco Fichtner <franco@yetisense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -32,7 +32,7 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
-WORKPREFIX="/tmp/opnsense-revert"
+WORKPREFIX="/tmp/yetisense-revert"
 WORKDIR=${WORKPREFIX}/${$}
 PKG="pkg-static"
 
@@ -72,12 +72,12 @@ done
 
 export ASSUME_ALWAYS_YES=yes
 
-MIRROR="$(opnsense-update -M)/MINT/${DO_RELEASE#-r }/latest/Latest"
-COREPKG=$(opnsense-version -n 2> /dev/null || true)
+MIRROR="$(yetisense-update -M)/MINT/${DO_RELEASE#-r }/latest/Latest"
+COREPKG=$(yetisense-version -n 2> /dev/null || true)
 COREDEP=
 
 if [ "${DO_RELEASE}" = "-z" ]; then
-	MIRROR="$(opnsense-update -Mz)/latest/Latest"
+	MIRROR="$(yetisense-update -Mz)/latest/Latest"
 fi
 
 if [ -n "${COREPKG}" ]; then
@@ -86,9 +86,9 @@ fi
 
 fetch()
 {
-	STAGE1="opnsense-fetch -T 30 -q -o ${WORKDIR}/${1}.sig ${MIRROR}/${1}.sig"
-	STAGE2="opnsense-fetch -T 30 -q -o ${WORKDIR}/${1} ${MIRROR}/${1}"
-	STAGE3="opnsense-verify ${WORKDIR}/${1}"
+	STAGE1="yetisense-fetch -T 30 -q -o ${WORKDIR}/${1}.sig ${MIRROR}/${1}.sig"
+	STAGE2="yetisense-fetch -T 30 -q -o ${WORKDIR}/${1} ${MIRROR}/${1}"
+	STAGE3="yetisense-verify ${WORKDIR}/${1}"
 
 	if [ -n "${DO_INSECURE}" ]; then
 		# no signature, no cry

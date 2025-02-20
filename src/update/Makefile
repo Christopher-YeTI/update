@@ -1,5 +1,5 @@
-SCRIPTS=opnsense-update.sh
-MAN=	opnsense-update.8
+SCRIPTS=yetisense-update.sh
+MAN=	yetisense-update.8
 
 LOCALBASE?=${DESTDIR}/usr/local
 PREFIX?=${LOCALBASE}

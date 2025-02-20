@@ -1,5 +1,6 @@
 .\"
-.\" Copyright (c) 2015-2021 Franco Fichtner <franco@opnsense.org>
+.\" Copyright (c) 2016-2022 Franco Fichtner <franco@yetisense.org>
+.\" Copyright (c) 2017 Marco Woitschitzky <woi@posteo.de>
 .\"
 .\" Redistribution and use in source and binary forms, with or without
 .\" modification, are permitted provided that the following conditions
@@ -24,53 +25,59 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd February 11, 2021
-.Dt OPNSENSE-VERIFY 8
+.Dd October 7, 2019
+.Dt OPNSENSE-REVERT 8
 .Os
 .Sh NAME
-.Nm opnsense-verify
-.Nd OPNsense signature verification
+.Nm yetisense-revert
+.Nd YETIsense revert utility
 .Sh SYNOPSIS
 .Nm
-.Op Fl q
-.Op Fl r Ar reponame
-.Ar file
-.Nm
-.Fl al
+.Op Fl i
+.Op Fl l
+.Op Fl r Ar release | Fl z
+.Ar package ...
 .Sh DESCRIPTION
 The
 .Nm
-utility verifies
-.Fx Ap s
-.Xr pkg 8
-signatures on arbitrary files.
-A separate file containing the signature with the
-.Sq .sig
-extension must be present in order to verify against.
+utility offers to securely install previous versions of packages found
+in an YETIsense release as long as the selected mirror caches said release.
 .Pp
-Please note that signature verification only works
-against a single given repository for safety reasons.
+Package flags
+.Sq automatic
+and
+.Sq vital
+will be restored to their expected values.
 .Pp
 The options are as follows:
-.Bl -tag -width ".Fl r Ar reponame" -offset indent
-.It Fl a
-Output the current system ABI string.
+.Bl -tag -width ".Fl r Ar release" -offset indent
+.It Fl i
+Ignore the signature verification result.
 .It Fl l
-Output the enabled repositories.
-.It Fl q
-Do not output text.
-.It Fl r Ar reponame
-Use the repository name
-.Ar reponame
-to find signature information.
-The default is
-.Sq OPNsense .
+Honour active locks.
+The default is to strip them and proceed with the revert.
+.It Fl r Ar release
+Select the
+.Ar release
+of the package to be installed.
+Note that the release is not the individual package version,
+but rather the version found in said YETIsense release.
+.It Fl z
+Use the snapshot directory which does not use minor versioning.
 .El
 .Sh EXIT STATUS
 .Ex -std
+.Sh EXAMPLES
+Revert Unbound package to the version found in YETIsense 17.7.1:
+.Pp
+.Dl # yetisense-revert -r 17.7.1 unbound
+.Pp
+Bring Unbound package back to the current version:
+.Pp
+.Dl # yetisense-revert unbound
+.Pp
 .Sh SEE ALSO
-.Xr pkg.conf 5 ,
-.Xr opnsense-sign 8 ,
-.Xr pkg 8
+.Xr yetisense-update 8 ,
+.Xr yetisense-verify 8
 .Sh AUTHORS
-.An Franco Fichtner Aq Mt franco@opnsense.org
+.An Franco Fichtner Aq Mt franco@yetisense.org

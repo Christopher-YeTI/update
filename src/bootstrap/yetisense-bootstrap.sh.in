@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (c) 2015-2024 Franco Fichtner <franco@opnsense.org>
+# Copyright (c) 2015-2024 Franco Fichtner <franco@yetisense.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -27,8 +27,8 @@
 
 set -e
 
-URL="https://github.com/opnsense/core/archive"
-WORKDIR="/tmp/opnsense-bootstrap"
+URL="https://github.com/Christopher-YeTI/core/archive"
+WORKDIR="/tmp/yetisense-bootstrap"
 RELEASE="%%RELEASE%%"
 FREEBSD="%%FREEBSD%%"
 
@@ -96,7 +96,7 @@ if [ -n "${DO_VERBOSE}" ]; then
 fi
 
 if [ -z "${RELEASE%"%%"*"%%"}" ]; then
-	echo "Must specify an OPNsense release." >&2
+	echo "Must specify an YETIsense release." >&2
 	exit 1
 fi
 
@@ -117,7 +117,7 @@ fi
 
 if [ -z "${DO_QUICK}" ]; then
 	echo "This utility will attempt to turn this installation into the latest"
-	echo "OPNsense ${RELEASE} release.  All packages will be deleted, the base"
+	echo "YETIsense ${RELEASE} release.  All packages will be deleted, the base"
 	echo "system and kernel will be replaced, and if all went well the system"
 	echo "will automatically reboot."
 	echo
@@ -171,7 +171,7 @@ if [ -n "${DO_QUICK}" ]; then
 		rm -rf /conf/*
 	fi
 
-	exec opnsense-update ${DO_INSECURE} ${DO_VERBOSE} ${DO_TYPE} -bkpf
+	exec yetisense-update ${DO_INSECURE} ${DO_VERBOSE} ${DO_TYPE} -bkpf
 fi
 
 rm -rf /usr/local/etc/pkg
@@ -221,11 +221,11 @@ if [ -z "${DO_BARE}" ]; then
 
 	pkg bootstrap
 	pkg install "${DO_TYPE#"-t "}"
-	echo "${RELEASE}" > /usr/local/opnsense/version/pkgs
+	echo "${RELEASE}" > /usr/local/yetisense/version/pkgs
 
 	# beyond this point verify everything
 	unset SSL_NO_VERIFY_PEER
 
-	opnsense-update ${DO_VERBOSE} -bkf
+	yetisense-update ${DO_VERBOSE} -bkf
 	reboot
 fi

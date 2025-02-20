@@ -3,7 +3,7 @@ upgrade: all install clean
 BINDIR=			${PREFIX}/sbin
 MANDIR=			${PREFIX}/share/man/man
 
-VERSIONBIN=		/usr/local/sbin/opnsense-version
+VERSIONBIN=		/usr/local/sbin/yetisense-version
 FREEBSDBIN=		/bin/freebsd-version
 
 .if exists(${VERSIONBIN})
